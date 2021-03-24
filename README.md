@@ -1,0 +1,12 @@
+- init
+- endpoint stubs
+- class burger
+- endpoint mocks
+- tests
+- burger repo
+- endpoint crud
+- db storage
+- db migrations
+- endpoint search, pagination
+- rate limit middleware
+- packaging
