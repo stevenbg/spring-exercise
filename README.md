@@ -1,12 +1,15 @@
-- init
-- endpoint stubs
-- class burger
-- endpoint mocks
-- tests
-- burger repo
-- endpoint crud
-- db storage
-- db migrations
-- endpoint search, pagination
-- rate limit middleware
-- packaging
+- [x] init
+- [x] endpoint stubs
+- [x] class burger
+- [x] endpoint mocks
+- [ ] tests
+- [x] burger repo
+- [ ] crud endpoints
+- [ ] db storage
+- [ ] db migrations
+- [ ] list search, pagination
+- [ ] config, prod/dev
+- [ ] doc
+- [ ] rate limit middleware
+- [ ] packaging
+- [ ] cli
