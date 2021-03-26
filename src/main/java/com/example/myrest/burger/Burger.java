@@ -6,7 +6,9 @@ import javax.persistence.Id;
 
 @Entity
 public class Burger {
-    private @Id @GeneratedValue Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
     private String name;
 
     public Burger() {}

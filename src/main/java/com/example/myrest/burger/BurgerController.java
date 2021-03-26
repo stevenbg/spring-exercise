@@ -3,8 +3,8 @@ package com.example.myrest.burger;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-// todo error handler
+
+// todo service
 @RestController
 // todo extract to config
 @RequestMapping(path="/v1/burgers")
@@ -25,15 +25,19 @@ public class BurgerController {
         return repository.save(new Burger(name));
     }
 
-//    todo return proper 404
     @GetMapping("/random")
-    public Optional<Burger> random() {
-        return repository.findRandom();
+    public Burger random() {
+        return repository.findRandom().orElseThrow(() -> new BurgerNotFoundException());
     }
 
     @GetMapping("/{id}")
-    public Optional<Burger> get(@PathVariable(value = "id") Long id) {
-        return repository.findById(id);
+    public Burger get(@PathVariable(value = "id") Long id) {
+        return repository.findById(id).orElseThrow(() -> new BurgerNotFoundException());
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable(value = "id") Long id) {
+        repository.deleteById(id);
     }
 
 }
