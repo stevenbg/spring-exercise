@@ -4,7 +4,7 @@
 - [x] endpoint mocks
 - [ ] tests
 - [x] burger repo
-- [ ] crud endpoints
+- [x] crud endpoints
 - [ ] db storage
 - [ ] db migrations
 - [ ] list search, pagination

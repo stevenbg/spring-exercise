@@ -25,6 +25,18 @@ public class BurgerController {
         return repository.save(new Burger(name));
     }
 
+    @PutMapping("/{id}")
+    public Burger replace(@RequestBody Burger newBurger, @PathVariable Long id) {
+        Burger b = repository.findById(id)
+            .map(burger -> {
+                burger.setName(newBurger.getName());
+                return repository.save(burger);
+            })
+            .orElseThrow(() -> new BurgerNotFoundException(id));
+
+        return b;
+    }
+
     @GetMapping("/random")
     public Burger random() {
         return repository.findRandom().orElseThrow(() -> new BurgerNotFoundException());
@@ -32,7 +44,8 @@ public class BurgerController {
 
     @GetMapping("/{id}")
     public Burger get(@PathVariable(value = "id") Long id) {
-        return repository.findById(id).orElseThrow(() -> new BurgerNotFoundException());
+        return repository.findById(id)
+                .orElseThrow(() -> new BurgerNotFoundException(id));
     }
 
     @DeleteMapping("/{id}")
