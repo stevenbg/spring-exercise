@@ -2,13 +2,12 @@ package com.example.myrest.burger;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 // todo service
 @RestController
@@ -28,14 +27,24 @@ public class BurgerController {
 
     @PostMapping("")
     public ResponseEntity<Burger> create(@RequestBody Burger newBurger) {
+        newBurger.setId(null);
         newBurger = repository.save(newBurger);
-        URI location = linkTo(methodOn(BurgerController.class).one(newBurger.getId())).toUri();
-        return ResponseEntity.created(location).body(newBurger);
+
+        final URI uri =
+                MvcUriComponentsBuilder
+                        .fromMethod(BurgerController.class,
+                                ClassUtils.getMethod(BurgerController.class, "one", null),
+                                newBurger.getId())
+                        .build()
+                        .toUri();
+
+        return ResponseEntity.created(uri).body(newBurger);
     }
 
     @GetMapping("/random")
     public Burger random() {
-        return repository.findRandom().orElseThrow(() -> new BurgerNotFoundException());
+        return repository.findRandom()
+            .orElseThrow(() -> new BurgerNotFoundException());
     }
 
     @GetMapping("/{id}")
@@ -47,7 +56,12 @@ public class BurgerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
-        repository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
+        else {
+            throw new BurgerNotFoundException(id);
+        }
     }
 
 }
