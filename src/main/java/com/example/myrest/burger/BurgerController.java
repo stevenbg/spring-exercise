@@ -1,8 +1,14 @@
 package com.example.myrest.burger;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 // todo service
 @RestController
@@ -16,25 +22,15 @@ public class BurgerController {
     }
 
     @GetMapping("")
-    public List<Burger> list() {
+    public List<Burger> find() {
         return repository.findAll();
     }
 
     @PostMapping("")
-    public Burger create(@RequestParam(value = "name") String name) {
-        return repository.save(new Burger(name));
-    }
-
-    @PutMapping("/{id}")
-    public Burger replace(@RequestBody Burger newBurger, @PathVariable Long id) {
-        Burger b = repository.findById(id)
-            .map(burger -> {
-                burger.setName(newBurger.getName());
-                return repository.save(burger);
-            })
-            .orElseThrow(() -> new BurgerNotFoundException(id));
-
-        return b;
+    public ResponseEntity<Burger> create(@RequestBody Burger newBurger) {
+        newBurger = repository.save(newBurger);
+        URI location = linkTo(methodOn(BurgerController.class).one(newBurger.getId())).toUri();
+        return ResponseEntity.created(location).body(newBurger);
     }
 
     @GetMapping("/random")
@@ -43,11 +39,12 @@ public class BurgerController {
     }
 
     @GetMapping("/{id}")
-    public Burger get(@PathVariable(value = "id") Long id) {
+    public Burger one(@PathVariable(value = "id") Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new BurgerNotFoundException(id));
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
         repository.deleteById(id);
