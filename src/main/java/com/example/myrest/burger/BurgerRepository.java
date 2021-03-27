@@ -1,7 +1,7 @@
 package com.example.myrest.burger;
 
-import com.example.myrest.RandomableRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.myrest.CustomizedJpaRepository;
 
-public interface BurgerRepository extends JpaRepository<Burger, Long>, RandomableRepository<Burger> {
+public interface BurgerRepository extends CustomizedJpaRepository<Burger, Long> {
 }
+

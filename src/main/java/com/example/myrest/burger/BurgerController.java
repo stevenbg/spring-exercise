@@ -1,5 +1,6 @@
 package com.example.myrest.burger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ClassUtils;
@@ -14,11 +15,9 @@ import java.util.List;
 // todo extract to config
 @RequestMapping(path="/v1/burgers")
 public class BurgerController {
-    private final BurgerRepository repository;
 
-    public BurgerController(BurgerRepository r) {
-        this.repository = r;
-    }
+    @Autowired
+    private BurgerRepository repository;
 
     @GetMapping("")
     public List<Burger> find() {
