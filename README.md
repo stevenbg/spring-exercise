@@ -1,5 +1,6 @@
 # Spring Boot exercise
 
+##Basic
 - [x] init
 - [x] endpoint stubs
 - [x] class burger
@@ -13,5 +14,11 @@
 - [ ] config, prod/dev
 - [x] doc
 - [ ] rate limit middleware
-- [ ] packaging
+
+##Extra
+- [ ] packaging options
 - [ ] cli
+- [ ] better errors
+- [ ] better repository
+- [ ] related entity
+- [ ] dto mapper

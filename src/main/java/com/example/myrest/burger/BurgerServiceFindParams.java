@@ -4,21 +4,31 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
-public class BurgerListParams {
+/**
+ * Defines the possible search parameters
+ */
+public class BurgerServiceFindParams {
     @Min(1)
     @Max(100000)
-    public Integer page = 1;
+
+    private Integer page = 1;
     @Min(1)
     @Max(1000)
-    public Integer per_page = 25;
+    private Integer per_page = 25;
 
     @Size(min = 3, max = 255)
-    public String name;
+    private String name;
 
+    /**
+     * The page index starts at 1
+     */
     public Integer getPage() {
         return page;
     }
 
+    /**
+     * The page index starts at 1
+     */
     public void setPage(Integer page) {
         this.page = page;
     }
@@ -28,6 +38,7 @@ public class BurgerListParams {
     }
 
     public void setPer_page(Integer per_page) {
+
         this.per_page = per_page;
     }
 

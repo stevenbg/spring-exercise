@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BurgerService {
@@ -17,15 +16,24 @@ public class BurgerService {
         this.repository = repository;
     }
 
-    public List<Burger> find(BurgerListParams params) {
+    private Burger burgerFromParams(BurgerServiceFindParams params) {
         Burger b = new Burger();
         if (params.getName() != null) {
             b.setName(params.getName());
         }
+
+        return b;
+    }
+
+    public List<Burger> find(BurgerServiceFindParams params) {
+        Burger burgerToMatch = burgerFromParams(params);
+
         ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-        Example<Burger> example = Example.of(b, exampleMatcher);
-        Page<Burger> result = repository.findAll(example, PageRequest.of(params.page - 1, params.per_page));
+        Example<Burger> example = Example.of(burgerToMatch, exampleMatcher);
+
+        Page<Burger> result = repository.findAll(example,
+                PageRequest.of(params.getPage() - 1, params.getPer_page()));
 
         return result.getContent();
     }
