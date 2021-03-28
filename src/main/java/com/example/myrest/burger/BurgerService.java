@@ -44,11 +44,17 @@ public class BurgerService {
         return b;
     }
 
+    /**
+     * Fetch a random burger
+     */
     public Burger fetchOne() {
         return repository.findRandom()
                 .orElseThrow(BurgerNotFoundException::new);
     }
 
+    /**
+     * Fetch burger by id
+     */
     public Burger fetchOne(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new BurgerNotFoundException(id));

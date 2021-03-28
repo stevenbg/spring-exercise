@@ -6,6 +6,6 @@ public class BurgerNotFoundException extends RuntimeException {
     }
 
     public BurgerNotFoundException(Long id) {
-        super("Burger not found: " + id);
+        super("Burger " + id + " not found");
     }
 }

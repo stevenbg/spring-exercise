@@ -22,4 +22,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.warn(ex.getMessage());
     }
 
+    @ExceptionHandler(RateLimiterException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    void tooManyRequestsHandler(RateLimiterException ex) {
+        logger.warn(ex.getMessage());
+    }
+
 }

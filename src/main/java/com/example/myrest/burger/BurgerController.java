@@ -1,5 +1,9 @@
 package com.example.myrest.burger;
 
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Bucket4j;
+import io.github.bucket4j.Refill;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ClassUtils;
@@ -8,17 +12,23 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 
-//@Validated
 @RestController
 // todo extract to config
 @RequestMapping(path="/v1/burgers")
 public class BurgerController {
     private final BurgerService service;
+    private final Bucket bucket;
 
     public BurgerController(BurgerService service) {
         this.service = service;
+
+        Bandwidth limit = Bandwidth.classic(3, Refill.greedy(3, Duration.ofMinutes(1)));
+        this.bucket = Bucket4j.builder()
+                        .addLimit(limit)
+                        .build();
     }
 
     @GetMapping("")
@@ -30,13 +40,12 @@ public class BurgerController {
     public ResponseEntity<Burger> create(@Valid @RequestBody Burger newBurger) {
         newBurger = service.add(newBurger);
 
-        URI uri =
-                MvcUriComponentsBuilder
-                        .fromMethod(BurgerController.class,
-                                ClassUtils.getMethod(BurgerController.class, "one", Long.class),
-                                newBurger.getId())
-                        .build()
-                        .toUri();
+        URI uri = MvcUriComponentsBuilder
+                    .fromMethod(BurgerController.class,
+                            ClassUtils.getMethod(BurgerController.class, "one", Long.class),
+                            newBurger.getId())
+                    .build()
+                    .toUri();
 
         return ResponseEntity.created(uri).body(newBurger);
     }
