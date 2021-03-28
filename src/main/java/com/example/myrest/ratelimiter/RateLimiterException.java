@@ -1,4 +1,4 @@
-package com.example.myrest;
+package com.example.myrest.ratelimiter;
 
 public class RateLimiterException extends RuntimeException {
 

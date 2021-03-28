@@ -1,4 +1,4 @@
-package com.example.myrest;
+package com.example.myrest.system;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

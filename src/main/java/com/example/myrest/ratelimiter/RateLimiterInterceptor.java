@@ -1,4 +1,4 @@
-package com.example.myrest;
+package com.example.myrest.ratelimiter;
 
 import io.github.bucket4j.*;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -31,7 +31,7 @@ public class RateLimiterInterceptor implements HandlerInterceptor {
     static private int instanceCounter = 0;
 
     /**
-     * Returns an rate limiting interceptor
+     * Returns a rate limiting interceptor
      * @param rate number of requests
      * @param interval period in seconds
      */
