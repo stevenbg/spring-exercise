@@ -5,12 +5,15 @@ import org.springframework.lang.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Burger {
     @Id
     @GeneratedValue
     private Long id;
+
+    @NotBlank
     private String name;
 
     public Burger() {}

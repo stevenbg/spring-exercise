@@ -3,36 +3,41 @@ package com.example.myrest.burger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
-// todo service
+//@Validated
 @RestController
 // todo extract to config
 @RequestMapping(path="/v1/burgers")
 public class BurgerController {
+    private final BurgerService service;
 
-    @Autowired
-    private BurgerRepository repository;
+    public BurgerController(BurgerService service) {
+        this.service = service;
+    }
 
     @GetMapping("")
-    public List<Burger> find() {
-        return repository.findAll();
+    public List<Burger> list(@Valid BurgerListParams listParams) {
+        return service.find(listParams);
     }
 
     @PostMapping("")
-    public ResponseEntity<Burger> create(@RequestBody Burger newBurger) {
-        newBurger.setId(null);
-        newBurger = repository.save(newBurger);
+    public ResponseEntity<Burger> create(@Valid @RequestBody Burger newBurger) {
+        newBurger = service.add(newBurger);
 
         final URI uri =
                 MvcUriComponentsBuilder
                         .fromMethod(BurgerController.class,
-                                ClassUtils.getMethod(BurgerController.class, "one", null),
+                                ClassUtils.getMethod(BurgerController.class, "one", Long.class),
                                 newBurger.getId())
                         .build()
                         .toUri();
@@ -42,25 +47,18 @@ public class BurgerController {
 
     @GetMapping("/random")
     public Burger random() {
-        return repository.findRandom()
-            .orElseThrow(() -> new BurgerNotFoundException());
+        return service.fetchOne();
     }
 
     @GetMapping("/{id}")
     public Burger one(@PathVariable(value = "id") Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new BurgerNotFoundException(id));
+        return service.fetchOne(id);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-        }
-        else {
-            throw new BurgerNotFoundException(id);
-        }
+        service.delete(id);
     }
 
 }

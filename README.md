@@ -1,3 +1,5 @@
+# Spring Boot exercise
+
 - [x] init
 - [x] endpoint stubs
 - [x] class burger
@@ -7,9 +9,9 @@
 - [x] crud endpoints
 - [ ] db storage
 - [ ] db migrations
-- [ ] list search, pagination
+- [x] list search, pagination
 - [ ] config, prod/dev
-- [ ] doc
+- [x] doc
 - [ ] rate limit middleware
 - [ ] packaging
 - [ ] cli
