@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Burger extends BaseEntity {
-    @NotBlank
     private String name;
 
     public Burger() {}

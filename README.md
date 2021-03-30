@@ -15,7 +15,7 @@
 - [x] endpoint stubs
 - [x] class burger
 - [x] endpoint mocks
-- [ ] tests
+- [x] tests
 - [x] burger repo
 - [x] crud endpoints
 - [x] db storage
@@ -31,3 +31,5 @@
 - [ ] better repository
 - [ ] more entities
 - [ ] dto mapper
+
+Directory structure akin to https://github.com/spring-io/sagan/tree/master/sagan-site/src/main/java/sagan/site
