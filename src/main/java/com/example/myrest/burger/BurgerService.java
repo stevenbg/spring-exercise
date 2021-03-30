@@ -26,6 +26,7 @@ public class BurgerService {
     }
 
     public List<Burger> find(BurgerServiceFindParams params) {
+//        let's pretend there are more parameters and findByName won't do
         Burger burgerToMatch = burgerFromParams(params);
 
         ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()

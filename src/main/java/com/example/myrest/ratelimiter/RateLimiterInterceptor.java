@@ -7,12 +7,14 @@ import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
+import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.ModifiedExpiryPolicy;
 import javax.cache.spi.CachingProvider;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 // todo extract RateLimiter
 /**
  * Fat interceptor
@@ -28,28 +30,26 @@ public class RateLimiterInterceptor implements HandlerInterceptor {
 //    or we'd have to write a gc to prevent the ConcurrentHashMap from growing indefinitely
     private Cache<String, Bucket> cache;
 
-    static private int instanceCounter = 0;
+    static private AtomicInteger instanceCounter = new AtomicInteger(0);
 
     /**
      * Returns a rate limiting interceptor
      * @param rate number of requests
      * @param interval period in seconds
      */
-    public RateLimiterInterceptor(Integer rate, Integer interval) {
+    public RateLimiterInterceptor(Integer rate, Integer interval, CacheManager cacheManager) {
         this.rate = rate;
         this.interval = interval;
 
 //        keeping stale buckets past interval is pointless
-        CachingProvider provider = Caching.getCachingProvider();
-        CacheManager cacheManager = provider.getCacheManager();
         MutableConfiguration<String, Bucket> configuration =
                 new MutableConfiguration<String, Bucket>()
                         .setTypes(String.class, Bucket.class)
                         .setStoreByValue(false)
                         .setStatisticsEnabled(false)
-                        .setExpiryPolicyFactory(ModifiedExpiryPolicy.factoryOf(new javax.cache.expiry.Duration(TimeUnit.SECONDS, interval)));
+                        .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(new javax.cache.expiry.Duration(TimeUnit.SECONDS, interval)));
 
-        cache = cacheManager.createCache("ratelimiter" + instanceCounter++, configuration);
+        cache = cacheManager.createCache("ratelimiter" + instanceCounter.getAndIncrement(), configuration);
     }
 
     private Bucket makeBucket(String key) {

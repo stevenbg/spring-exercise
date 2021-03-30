@@ -1,21 +1,38 @@
 package com.example.myrest.system;
 
-import com.example.myrest.ratelimiter.RateLimiterInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.sql.DataSource;
 
 @Configuration
-public class AppConfig implements WebMvcConfigurer {
+// todo .env?
+// There's an @EnableJpaRepositories at the app root
+public class AppConfig {
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    @Autowired
+    private Environment env;
 
-        registry.addInterceptor(new RateLimiterInterceptor(3600, 3600))
-                .addPathPatterns("/v1/burgers/**");
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+        dataSource.setUrl(env.getProperty("jdbc.url"));
+        dataSource.setUsername(env.getProperty("jdbc.user"));
+        dataSource.setPassword(env.getProperty("jdbc.pass"));
+        return dataSource;
     }
 
+//    Spring Boot sets up Hibernate by default
 
+    @Bean
+    public CacheManager beanCacheManager() {
+        return Caching.getCachingProvider().getCacheManager();
+    }
 }
-

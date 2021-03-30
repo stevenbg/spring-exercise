@@ -5,15 +5,15 @@ import com.example.myrest.ratelimiter.RateLimiterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
  * Minimal errors - status code and log.
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -29,4 +29,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.warn(ex.getMessage());
     }
 
+//    500
 }
