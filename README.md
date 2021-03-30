@@ -10,7 +10,7 @@
 
 `curl -i http://localhost:8080/v1/burgers/1 -X DELETE`
 
-## Basic
+## Todo
 - [x] init
 - [x] endpoint stubs
 - [x] class burger

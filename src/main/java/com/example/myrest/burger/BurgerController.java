@@ -21,7 +21,7 @@ public class BurgerController {
     }
 
     @GetMapping("")
-    public List<Burger> list(@Valid BurgerServiceFindParams listParams) {
+    public List<Burger> list(@Valid BurgerSearchParams listParams) {
         return service.find(listParams);
     }
 

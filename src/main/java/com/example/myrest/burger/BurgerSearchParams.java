@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 /**
  * Defines the possible search parameters
  */
-public class BurgerServiceFindParams {
+public class BurgerSearchParams {
     @Min(1)
     @Max(100000)
 
@@ -48,5 +48,14 @@ public class BurgerServiceFindParams {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Burger burgerize() {
+        Burger b = new Burger();
+        if (getName() != null) {
+            b.setName(getName());
+        }
+
+        return b;
     }
 }
