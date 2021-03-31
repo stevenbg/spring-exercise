@@ -1,7 +1,11 @@
 package com.example.myrest.burger;
 
+import com.example.myrest.ingredient.Ingredient;
+import com.example.myrest.ingredient.IngredientDto;
+import com.example.myrest.ingredient.IngredientNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -12,32 +16,40 @@ public class BurgerService {
         this.repository = repository;
     }
 
-    public List<Burger> find(BurgerSearchParams params) {
-        List<Burger> result = repository.findByParams(params);
-//        do stuff
-        return result;
+    public List<BurgerDto> find(BurgerSearchParams params) {
+        List<BurgerDto> out = new ArrayList<>();
+        repository.findByParams(params).forEach(
+                x -> { out.add(new BurgerDto(x)); }
+        );
+        return out;
     }
 
-    public Burger add(Burger b) {
+    public BurgerDto add(BurgerDto b) {
         b.setId(null);
-        b = repository.save(b);
+        return new BurgerDto(repository.save(b.toBurger()));
+    }
+
+    public BurgerDto save(BurgerDto b) {
+        b = new BurgerDto(repository.save(b.toBurger()));
         return b;
     }
 
     /**
      * Fetch a random burger
      */
-    public Burger fetchOne() {
-        return repository.findRandom()
-                .orElseThrow(BurgerNotFoundException::new);
+    public BurgerDto fetchOne() {
+        Burger burger = repository.findRandom()
+                .orElseThrow(() -> new BurgerNotFoundException());
+        return new BurgerDto(burger);
     }
 
     /**
      * Fetch burger by id
      */
-    public Burger fetchOne(Long id) {
-        return repository.findById(id)
+    public BurgerDto fetchOne(Long id) {
+        Burger burger = repository.findById(id)
                 .orElseThrow(() -> new BurgerNotFoundException(id));
+        return new BurgerDto(burger);
     }
 
     public void delete(Long id) {

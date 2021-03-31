@@ -1,6 +1,18 @@
 # Spring Boot exercise
 
+## Run
+
+`run-docker-mysql`
+
+`mvnw flyway:migrate`
+
+`mvnw spring-boot:run`
+
+## Usage
+
 `curl -i http://localhost:8080/v1/burgers -X POST -H "Content-Type: application/json" -d "{\"name\":\"Big Mac\"}"`
+
+`curl -i http://localhost:8080/v1/burgers`
 
 `curl -i http://localhost:8080/v1/burgers/1`
 
@@ -25,11 +37,12 @@
 - [x] rate limit middleware
 - [x] db migrations
 - [x] prod/dev config by env
-- [ ] n:m entities  
+- [x] n:m entities  
 - [ ] packaging options
 - [ ] cli
 - [ ] better errors
 - [ ] better repository
+- [ ] dig in hibernate  
 - [ ] dto mapper
 
 Directory structure akin to https://github.com/spring-io/sagan/tree/master/sagan-site/src/main/java/sagan/site

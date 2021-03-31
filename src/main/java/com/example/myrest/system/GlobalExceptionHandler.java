@@ -1,6 +1,8 @@
 package com.example.myrest.system;
 
 import com.example.myrest.burger.BurgerNotFoundException;
+import com.example.myrest.ingredient.IngredientInUseException;
+import com.example.myrest.ingredient.IngredientNotFoundException;
 import com.example.myrest.ratelimiter.RateLimiterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BurgerNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     void burgerNotFoundHandler(BurgerNotFoundException ex) {
+        logger.warn(ex.getMessage());
+    }
+
+    @ExceptionHandler(IngredientNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    void ingredientNotFoundHandler(IngredientNotFoundException ex) {
+        logger.warn(ex.getMessage());
+    }
+
+    @ExceptionHandler(IngredientInUseException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    void ingredientNotFoundHandler(IngredientInUseException ex) {
         logger.warn(ex.getMessage());
     }
 

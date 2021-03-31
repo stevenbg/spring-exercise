@@ -37,8 +37,9 @@ class MyrestApplicationTests {
 	}
 
 //	todo split up
+//	todo test with ingredients
 	@Test
-	void testAllTheThings() throws Exception {
+	void testJustTheBurgers() throws Exception {
 		Burger testBurger = new Burger();
 		testBurger.setName("Big Mac");
 //        we're using an empty memory db

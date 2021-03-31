@@ -1,6 +1,7 @@
 package com.example.myrest.burger;
 
-import org.springframework.core.env.Environment;
+import com.example.myrest.ingredient.IngredientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ClassUtils;
@@ -10,27 +11,27 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path="${myapi.path.root}${myapi.path.burgers}")
 public class BurgerController {
-    private final BurgerService service;
 
-    public BurgerController(BurgerService service) {
-        this.service = service;
-    }
+    @Autowired
+    private BurgerService burgerService;
+
+    @Autowired
+    private IngredientService ingredientService;
 
     @GetMapping("")
     public List<BurgerDto> list(@Valid BurgerSearchParams listParams) {
-        List<Burger> result = service.find(listParams);
+        List<BurgerDto> result = burgerService.find(listParams);
 
-        return result.stream().map(BurgerDto::new).collect(Collectors.toList());
+        return result;
     }
 
     @PostMapping("")
-    public ResponseEntity<BurgerDto> create(@Valid @RequestBody BurgerDto incoming) {
-        Burger burger = service.add(incoming.toBurger());
+    public ResponseEntity<BurgerDto> create(@Valid @RequestBody BurgerDto burger) {
+        burger = burgerService.add(burger);
 
         URI uri = MvcUriComponentsBuilder
             .fromMethod(BurgerController.class,
@@ -39,23 +40,39 @@ public class BurgerController {
             .build()
             .toUri();
 
-        return ResponseEntity.created(uri).body(new BurgerDto(burger));
+        return ResponseEntity.created(uri).body(burger);
+    }
+
+    @PostMapping("/{id}/${myapi.path.ingredients}")
+    public ResponseEntity<BurgerDto> ingredients(@PathVariable(value = "id") Long burger_id, @Valid @RequestBody List<Long> ingredient_ids) {
+        BurgerDto burger = burgerService.fetchOne(burger_id);
+        burger.setIngredients(ingredientService.fetch(ingredient_ids));
+        burger = burgerService.save(burger);
+
+        URI uri = MvcUriComponentsBuilder
+                .fromMethod(BurgerController.class,
+                        ClassUtils.getMethod(BurgerController.class, "one", Long.class),
+                        burger.getId())
+                .build()
+                .toUri();
+
+        return ResponseEntity.created(uri).body(burger);
     }
 
     @GetMapping("/random")
     public BurgerDto random() {
-        return new BurgerDto(service.fetchOne());
+        return burgerService.fetchOne();
     }
 
     @GetMapping("/{id}")
     public BurgerDto one(@PathVariable(value = "id") Long id) {
-        return new BurgerDto(service.fetchOne(id));
+        return burgerService.fetchOne(id);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
-        service.delete(id);
+        burgerService.delete(id);
     }
 
 }
