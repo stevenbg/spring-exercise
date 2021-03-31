@@ -15,17 +15,30 @@ public class BurgerRepositoryExtImpl implements BurgerRepositoryExt {
     @Autowired
     private BurgerRepository repository;
 
+//    @Override
+//    public List<Burger> findByParams(BurgerSearchParams params) {
+//        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
+//                .withIgnoreNullValues()
+//                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+//        Example<Burger> example = Example.of(params.burgerize(), exampleMatcher);
+//
+//        Page<Burger> result = repository.findAll(example,
+//                PageRequest.of(params.getPage() - 1, params.getPer_page()));
+//
+////        or loop over params with a query builder
+//
+//        return result.getContent();
+//    }
+
+
     @Override
     public List<Burger> findByParams(BurgerSearchParams params) {
-        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-        Example<Burger> example = Example.of(params.burgerize(), exampleMatcher);
+        BurgerSearchSpecification spec = new BurgerSearchSpecification(params);
 
-        Page<Burger> result = repository.findAll(example,
+        Page<Burger> result = repository.findAll(spec,
                 PageRequest.of(params.getPage() - 1, params.getPer_page()));
-
-//        or loop over params with a query builder
 
         return result.getContent();
     }
+
 }

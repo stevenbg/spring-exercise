@@ -1,8 +1,12 @@
 package com.example.myrest.burger;
 
+import com.example.myrest.ingredient.Ingredient;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Defines the possible search parameters
@@ -10,14 +14,25 @@ import javax.validation.constraints.Size;
 public class BurgerSearchParams {
     @Min(1)
     @Max(100000)
-
     private Integer page = 1;
+
     @Min(1)
     @Max(1000)
     private Integer per_page = 25;
 
     @Size(min = 3, max = 255)
     private String name;
+
+    @Size(min = 0, max = 3)
+    private List<Long> ingredients = new ArrayList<>();
+
+    public List<Long> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Long> ingredients) {
+        this.ingredients = ingredients;
+    }
 
     /**
      * The page index starts at 1
@@ -55,6 +70,12 @@ public class BurgerSearchParams {
         if (getName() != null) {
             b.setName(getName());
         }
+
+        getIngredients().forEach(x -> {
+            Ingredient i = new Ingredient();
+            i.setId(x);
+            b.addIngredient(i);
+        });
 
         return b;
     }

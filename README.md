@@ -22,6 +22,10 @@
 
 `curl -i http://localhost:8080/v1/burgers/1 -X DELETE`
 
+`curl -i http://localhost:8080/v1/ingredients`
+
+`curl -i http://localhost:8080/v1/burgers/2/ingredients -X POST -H "Content-Type: application/json" -d "[1,3,5]"`
+
 ## Todo
 - [x] init
 - [x] endpoint stubs
@@ -44,5 +48,6 @@
 - [ ] better repository
 - [ ] dig in hibernate  
 - [ ] dto mapper
+- [ ] metamodels
 
 Directory structure akin to https://github.com/spring-io/sagan/tree/master/sagan-site/src/main/java/sagan/site
