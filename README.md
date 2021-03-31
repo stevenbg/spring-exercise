@@ -23,13 +23,13 @@
 - [x] config
 - [x] doc
 - [x] rate limit middleware
-- [ ] db migrations
-- [x] prod/dev config by env  
+- [x] db migrations
+- [x] prod/dev config by env
+- [ ] n:m entities  
 - [ ] packaging options
 - [ ] cli
 - [ ] better errors
 - [ ] better repository
-- [ ] more entities
 - [ ] dto mapper
 
 Directory structure akin to https://github.com/spring-io/sagan/tree/master/sagan-site/src/main/java/sagan/site
