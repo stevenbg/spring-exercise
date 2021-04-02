@@ -69,7 +69,7 @@ public class BurgerController {
     }
 
     private URI getBurgerUri(Long id) {
-//        stopped working with the externally configured paths
+//        todo stopped working with the externally configured paths
 //        URI uri = MvcUriComponentsBuilder
 //            .fromMethod(BurgerController.class,
 //                    ClassUtils.getMethod(BurgerController.class, "one", Long.class),

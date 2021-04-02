@@ -13,29 +13,27 @@ public class BurgerDto {
     @NotBlank
     private String name;
 
-    public List<IngredientDto> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<IngredientDto> ingredients) {
-        this.ingredients = ingredients;
-    }
-
     private List<IngredientDto> ingredients = new ArrayList<>();
 
     public BurgerDto() {
     }
 
     public BurgerDto(Burger burger) {
-        setId(burger.getId());
-        setName(burger.getName());
+        this.id = burger.getId();
+        this.name = burger.getName();
         ingredients = burger.getIngredients()
-            .stream().map(x -> { return new IngredientDto(x); })
-            .collect(Collectors.toList());
+                .stream().map(x -> {
+                    return new IngredientDto(x);
+                })
+                .collect(Collectors.toList());
     }
 
-    public BurgerDto(Long burger_id) {
-        setId(burger_id);
+    public List<IngredientDto> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<IngredientDto> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public Burger toBurger() {
@@ -46,7 +44,6 @@ public class BurgerDto {
         });
         return b;
     }
-
 
 
     public Long getId() {

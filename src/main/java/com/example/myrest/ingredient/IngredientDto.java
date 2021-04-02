@@ -16,10 +16,6 @@ public class IngredientDto {
         name = ingredient.getName();
     }
 
-    public IngredientDto(Long id) {
-        setId(id);
-    }
-
     public Ingredient toIngredient() {
         Ingredient b = new Ingredient(getName());
         b.setId(getId());

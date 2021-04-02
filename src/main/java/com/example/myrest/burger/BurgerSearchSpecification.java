@@ -1,8 +1,8 @@
 package com.example.myrest.burger;
 
 import com.example.myrest.ingredient.Ingredient;
+import com.example.myrest.ingredient.Ingredient_;
 import org.springframework.data.jpa.domain.Specification;
-
 
 import javax.persistence.criteria.*;
 
@@ -26,13 +26,13 @@ public class BurgerSearchSpecification implements Specification<Burger> {
 
         if (isEmpty(params.getName()) == false) {
             predicates.add(criteriaBuilder.and(criteriaBuilder.like(
-                    criteriaBuilder.upper(root.get("name")),
+                    criteriaBuilder.upper(root.get(com.example.myrest.burger.Burger_.name)),
                     "%" + String.valueOf(params.getName()).toUpperCase() + "%")));
         }
 
         if (isEmpty(params.getIngredients()) == false) {
-            Join<Burger, Ingredient> join = root.join("ingredients", JoinType.INNER);
-            predicates.add(criteriaBuilder.and(join.get("id").in(params.getIngredients())));
+            Join<Burger, Ingredient> root_ingredients = root.join(com.example.myrest.burger.Burger_.ingredients, JoinType.INNER);
+            predicates.add(criteriaBuilder.and(root_ingredients.get(Ingredient_.id).in(params.getIngredients())));
         }
 
         return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
