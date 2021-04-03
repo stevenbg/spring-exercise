@@ -5,11 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -70,12 +67,10 @@ public class BurgerController {
 
     private URI getBurgerUri(Long id) {
 //        todo stopped working with the externally configured paths
-//        URI uri = MvcUriComponentsBuilder
-//            .fromMethod(BurgerController.class,
+//        URI uri = MvcUriComponentsBuilder.fromMethod(BurgerController.class,
 //                    ClassUtils.getMethod(BurgerController.class, "one", Long.class),
 //                    id)
-//            .build()
-//            .toUri();
+//                .build().toUri();
 
 //        base?
 

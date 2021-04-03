@@ -1,7 +1,5 @@
 package com.example.myrest.burger;
 
-import com.example.myrest.ingredient.Ingredient;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -65,18 +63,4 @@ public class BurgerSearchParams {
         this.name = name;
     }
 
-    public Burger burgerize() {
-        Burger b = new Burger();
-        if (getName() != null) {
-            b.setName(getName());
-        }
-
-        getIngredients().forEach(x -> {
-            Ingredient i = new Ingredient();
-            i.setId(x);
-            b.addIngredient(i);
-        });
-
-        return b;
-    }
 }

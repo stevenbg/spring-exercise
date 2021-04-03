@@ -1,8 +1,5 @@
 package com.example.myrest.burger;
 
-import com.example.myrest.ingredient.Ingredient;
-import com.example.myrest.ingredient.IngredientDto;
-import com.example.myrest.ingredient.IngredientNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
