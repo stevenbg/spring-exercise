@@ -21,7 +21,7 @@ public class BurgerSearchParams {
     @Size(min = 3, max = 255)
     private String name;
 
-    @Size(min = 0, max = 3)
+    @Size(max = 3)
     private List<Long> ingredients = new ArrayList<>();
 
     public List<Long> getIngredients() {

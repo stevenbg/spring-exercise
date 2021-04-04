@@ -33,14 +33,24 @@ public class IngredientService {
     public IngredientDto fetchOne(Long id) {
         Ingredient ingredient = repository.findById(id)
                 .orElseThrow(() -> new IngredientNotFoundException(id));
+
         return new IngredientDto(ingredient);
     }
 
-    public List<IngredientDto> fetch(List<Long> ids) {
+    public List<IngredientDto> fetchMany(List<Long> ids) {
         List<IngredientDto> out = new ArrayList<>();
+
         repository.findByIdIn(ids).forEach(
-                x -> { out.add(new IngredientDto(x)); }
+                x -> {
+                    ids.remove(x.getId());
+                    out.add(new IngredientDto(x));
+                }
         );
+
+        if (ids.size() > 0) {
+            throw new IngredientNotFoundException(ids);
+        }
+
         return out;
     }
 

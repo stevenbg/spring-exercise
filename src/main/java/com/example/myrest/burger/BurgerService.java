@@ -36,7 +36,7 @@ public class BurgerService {
      */
     public BurgerDto fetchOne() {
         Burger burger = repository.findRandom()
-                .orElseThrow(() -> new BurgerNotFoundException());
+                .orElseThrow(BurgerNotFoundException::new);
         return new BurgerDto(burger);
     }
 

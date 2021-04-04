@@ -66,7 +66,7 @@ public class RateLimiter {
         return new Result(probe.isConsumed(), probe.getRemainingTokens(), probe.getNanosToWaitForRefill() / 1_000_000_000);
     }
 
-    public class Result {
+    static class Result {
         public final Boolean success;
         public final Long remaining;
         public final Long wait;

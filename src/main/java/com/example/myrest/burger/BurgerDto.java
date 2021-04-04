@@ -22,9 +22,7 @@ public class BurgerDto {
         this.id = burger.getId();
         this.name = burger.getName();
         ingredients = burger.getIngredients()
-                .stream().map(x -> {
-                    return new IngredientDto(x);
-                })
+                .stream().map(IngredientDto::new)
                 .collect(Collectors.toList());
     }
 

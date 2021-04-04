@@ -43,7 +43,7 @@ public class BurgerController {
     @PostMapping("/{id}/${myapi.path.ingredients}")
     public ResponseEntity<BurgerDto> ingredients(@PathVariable(value = "id") Long burger_id, @Valid @RequestBody List<Long> ingredient_ids) {
         BurgerDto burger = burgerService.fetchOne(burger_id);
-        burger.setIngredients(ingredientService.fetch(ingredient_ids));
+        burger.setIngredients(ingredientService.fetchMany(ingredient_ids));
         burger = burgerService.save(burger);
 
         return ResponseEntity.created(getBurgerUri(burger.getId())).body(burger);
