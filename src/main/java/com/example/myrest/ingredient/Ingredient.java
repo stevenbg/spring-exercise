@@ -22,12 +22,11 @@ public class Ingredient extends BaseEntity {
         this.name = name;
     }
 
-    public Set<Burger> getBurgers() {
-        return burgers;
+    public void addBurger(Burger burger) {
+        this.burgers.add(burger);
     }
-
-    public void setBurgers(Set<Burger> burgers) {
-        this.burgers = burgers;
+    public void removeBurger(Burger burger) {
+        this.burgers.remove(burger);
     }
 
     public String getName() {

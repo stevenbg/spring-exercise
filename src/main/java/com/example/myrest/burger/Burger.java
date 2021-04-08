@@ -36,11 +36,11 @@ public class Burger extends BaseEntity {
 
     public void addIngredient(Ingredient ingredient) {
         ingredients.add(ingredient);
-        ingredient.getBurgers().add(this);
+        ingredient.addBurger(this);
     }
     public void removeIngredient(Ingredient ingredient) {
         ingredients.remove(ingredient);
-        ingredient.getBurgers().remove(this);
+        ingredient.removeBurger(this);
     }
 
     public List<Ingredient> getIngredients() {

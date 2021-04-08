@@ -9,22 +9,25 @@ import java.util.List;
 @Service
 public class IngredientService {
     private final IngredientRepository repository;
+    private final IngredientMapper ingredientMapper;
 
-    public IngredientService(IngredientRepository repository) {
+    public IngredientService(IngredientRepository repository, IngredientMapper ingredientMapper) {
         this.repository = repository;
+        this.ingredientMapper = ingredientMapper;
     }
 
     public List<IngredientDto> findByName(String name) {
         List<IngredientDto> out = new ArrayList<>();
         repository.findByNameContainingIgnoreCase(name).forEach(
-                x -> { out.add(new IngredientDto(x)); }
+                x -> { out.add(ingredientMapper.toDto(x)); }
         );
         return out;
     }
 
     public IngredientDto add(IngredientDto i) {
         i.setId(null);
-        return new IngredientDto(repository.save(i.toIngredient()));
+        Ingredient saved = repository.save(ingredientMapper.toIngredient(i));
+        return ingredientMapper.toDto(saved);
     }
 
     /**
@@ -34,7 +37,7 @@ public class IngredientService {
         Ingredient ingredient = repository.findById(id)
                 .orElseThrow(() -> new IngredientNotFoundException(id));
 
-        return new IngredientDto(ingredient);
+        return ingredientMapper.toDto(ingredient);
     }
 
     public List<IngredientDto> fetchMany(List<Long> ids) {
@@ -43,7 +46,7 @@ public class IngredientService {
         repository.findByIdIn(ids).forEach(
                 x -> {
                     ids.remove(x.getId());
-                    out.add(new IngredientDto(x));
+                    out.add(ingredientMapper.toDto(x));
                 }
         );
 
