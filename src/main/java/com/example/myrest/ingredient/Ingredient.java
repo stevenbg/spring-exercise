@@ -19,6 +19,11 @@ public class Ingredient extends BaseEntity {
     }
 
     public Ingredient(String name) {
+        this(null, name);
+    }
+
+    public Ingredient(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 

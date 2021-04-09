@@ -4,6 +4,7 @@ import com.example.myrest.ingredient.Ingredient;
 import com.example.myrest.model.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,12 +21,20 @@ public class Burger extends BaseEntity {
             joinColumns = @JoinColumn(name = "burger_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private Set<Ingredient> ingredients = new HashSet<>();
+    private final Set<Ingredient> ingredients = new HashSet<>();
 
     public Burger() {}
     public Burger(String name) {
-        this.name = name;
+        this(null, name, new ArrayList<Ingredient>());
     }
+    public Burger(Long id, String name, List<Ingredient> ingredients) {
+        this.id = id;
+        this.name = name;
+        ingredients.forEach(x -> {
+            addIngredient(x);
+        });
+    }
+//    todo builder
 
     public String getName() {
         return name;
@@ -44,6 +53,6 @@ public class Burger extends BaseEntity {
     }
 
     public List<Ingredient> getIngredients() {
-        return List.copyOf(ingredients);
+        return new ArrayList<Ingredient>(ingredients);
     }
 }

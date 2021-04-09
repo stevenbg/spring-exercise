@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class BurgerMapper {
-    private IngredientMapper ingredientMapper;
+    private final IngredientMapper ingredientMapper;
 
     public BurgerMapper(IngredientMapper ingredientMapper) {
         this.ingredientMapper = ingredientMapper;
@@ -32,10 +32,9 @@ public class BurgerMapper {
         out.setId(burger.getId());
         out.setName(burger.getName());
 
-
         List<IngredientDto> ingredientsDto = burger.getIngredients().stream().map(x -> {
-            return ingredientMapper.toDto(x);
-        }).collect(Collectors.toList());
+                return ingredientMapper.toDto(x);
+            }).collect(Collectors.toList());
 
         out.setIngredients(ingredientsDto);
 

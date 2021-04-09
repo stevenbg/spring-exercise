@@ -1,6 +1,6 @@
-INSERT INTO `burger` (`name`) VALUES ('Big Mac');
-INSERT INTO `burger` (`name`) VALUES ('Whopper');
-INSERT INTO `burger` (`name`) VALUES ('Cheesus');
-INSERT INTO `burger` (`name`) VALUES ('Big Tasty');
-INSERT INTO `burger` (`name`) VALUES ('Cheeseburger');
-INSERT INTO `burger` (`name`) VALUES ('Zinger');
+INSERT INTO `burger` (`id`, `name`) VALUES (1, 'Big Mac');
+INSERT INTO `burger` (`id`, `name`) VALUES (2, 'Whopper');
+INSERT INTO `burger` (`id`, `name`) VALUES (3, 'Cheesus');
+INSERT INTO `burger` (`id`, `name`) VALUES (4, 'Big Tasty');
+INSERT INTO `burger` (`id`, `name`) VALUES (5, 'Cheeseburger');
+INSERT INTO `burger` (`id`, `name`) VALUES (6, 'Zinger');

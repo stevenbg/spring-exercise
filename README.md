@@ -42,12 +42,12 @@
 - [x] db migrations
 - [x] prod/dev config by env
 - [x] n:m entity
+- [x] metamodels  
+- [x] dto mapper 
+- [ ] hibernate versioning  
 - [ ] packaging options
 - [ ] cli
 - [ ] better errors
 - [ ] better repository
-- [ ] dig in hibernate  
-- [ ] dto mapper
-- [x] metamodels
 
 Directory structure akin to https://github.com/spring-io/sagan/tree/master/sagan-site/src/main/java/sagan/site

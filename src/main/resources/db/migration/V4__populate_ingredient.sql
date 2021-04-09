@@ -1,6 +1,6 @@
-INSERT INTO `ingredient` (`name`) VALUES ('Pork patty');
-INSERT INTO `ingredient` (`name`) VALUES ('Beef patty');
-INSERT INTO `ingredient` (`name`) VALUES ('Yellow cheese');
-INSERT INTO `ingredient` (`name`) VALUES ('Tomato slice');
-INSERT INTO `ingredient` (`name`) VALUES ('Onion');
+INSERT INTO `ingredient` (`id`, `name`) VALUES (1, 'Pork patty');
+INSERT INTO `ingredient` (`id`, `name`) VALUES (2, 'Beef patty');
+INSERT INTO `ingredient` (`id`, `name`) VALUES (3, 'Yellow cheese');
+INSERT INTO `ingredient` (`id`, `name`) VALUES (4, 'Tomato slice');
+INSERT INTO `ingredient` (`id`, `name`) VALUES (5, 'Onion');
 

@@ -10,6 +10,10 @@ public class IngredientDto {
 
     public IngredientDto() {
     }
+    public IngredientDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

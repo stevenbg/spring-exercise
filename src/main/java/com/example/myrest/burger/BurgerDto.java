@@ -12,17 +12,23 @@ public class BurgerDto {
     @NotBlank
     private String name;
 
-    private List<IngredientDto> ingredients = new ArrayList<>();
+    private final List<IngredientDto> ingredients = new ArrayList<>();
 
     public BurgerDto() {
     }
+    public BurgerDto(Long id, String name, List<IngredientDto> ingredients) {
+        this.id = id;
+        this.name = name;
+        this.ingredients.addAll(ingredients);
+    }
 
     public List<IngredientDto> getIngredients() {
-        return List.copyOf(ingredients);
+        return new ArrayList<IngredientDto>(ingredients);
     }
 
     public void setIngredients(List<IngredientDto> ingredients) {
-        this.ingredients = List.copyOf(ingredients);
+        this.ingredients.clear();
+        this.ingredients.addAll(ingredients);
     }
 
     public Long getId() {
@@ -40,4 +46,5 @@ public class BurgerDto {
     public void setName(String name) {
         this.name = name;
     }
+
 }
