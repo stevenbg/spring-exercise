@@ -1,6 +1,7 @@
 package com.example.myrest.ratelimiter;
 
 import io.github.bucket4j.*;
+import io.github.bucket4j.local.LocalBucketBuilder;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -14,26 +15,23 @@ import java.util.concurrent.atomic.AtomicInteger;
  * A generic rate limiter. Requires a CacheManager.
  */
 public class RateLimiter {
-//    to change the params on the fly,
+//    To change the params on the fly,
 //    we'd have to replaceConfiguration for all the buckets,
-//    while moving them in a new cache with the new expiry
-    private final Integer rate;
-    private final Integer interval;
-//    we're using Cache, so the entries can expire
+//    while moving them in a new cache with the new expiry.
+//    We're using Cache, so the entries can expire
 //    or we'd have to write a gc to prevent the ConcurrentHashMap from growing indefinitely
-    private Cache<String, Bucket> cache;
+    private final Cache<String, Bucket> cache;
+    private LocalBucketBuilder localBucketBuilder;
 
-    static private AtomicInteger instanceCounter = new AtomicInteger(0);
+    static private final AtomicInteger instanceCounter = new AtomicInteger(0);
 
     /**
      * @param rate number of requests
      * @param interval period in seconds
      * @param cacheManager the app's CacheManager
      */
-    public RateLimiter(Integer rate, Integer interval, CacheManager cacheManager) {
-        this.rate = rate;
-        this.interval = interval;
 
+    public RateLimiter(Integer rate, Integer interval, CacheManager cacheManager) {
 //        keeping stale buckets past interval is pointless
         MutableConfiguration<String, Bucket> configuration =
                 new MutableConfiguration<String, Bucket>()
@@ -45,23 +43,23 @@ public class RateLimiter {
 
         String cache_name = getClass().getCanonicalName() + String.valueOf(instanceCounter.getAndIncrement());
         cache = cacheManager.createCache(cache_name, configuration);
-    }
 
-    private Bucket makeBucket(String key) {
         Refill refill = Refill.intervally(rate, Duration.ofSeconds(interval));
         Bandwidth limit = Bandwidth.classic(rate, refill);
-        return Bucket4j.builder()
-                .addLimit(limit)
-                .build();
+        localBucketBuilder = Bucket4j.builder().addLimit(limit);
+    }
+
+    public RateLimiter(Integer rate, Integer interval, CacheManager cacheManager, TimeMeter customTimeMeter) {
+        this(rate, interval, cacheManager);
+        localBucketBuilder = localBucketBuilder.withCustomTimePrecision(customTimeMeter);
     }
 
     public Result attemptAction(String actor_key) {
 //        wasteful compared to computeIfAbsent
-        cache.putIfAbsent(actor_key, makeBucket(actor_key));
+        cache.putIfAbsent(actor_key, localBucketBuilder.build());
         Bucket tokenBucket = cache.get(actor_key);
 
         ConsumptionProbe probe = tokenBucket.tryConsumeAndReturnRemaining(1);
-        Result result = null;
 
         return new Result(probe.isConsumed(), probe.getRemainingTokens(), probe.getNanosToWaitForRefill() / 1_000_000_000);
     }
@@ -78,6 +76,8 @@ public class RateLimiter {
         }
     }
 
-//    public void finalize()
+    public void finalize() {
+        cache.getCacheManager().destroyCache(cache.getName());
+    }
 
 }
