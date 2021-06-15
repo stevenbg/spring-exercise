@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myrest
+  labels:
+    app: web
+spec:
+  containers:
+  - name: database
+    image: mysql/mysql-server:8.0
+    ports:
+    - containerPort: 3306
+  - name: app
+    image: openjdk:16
+    ports:
+    - containerPort: 80
+--

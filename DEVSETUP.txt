@@ -1,0 +1,29 @@
+# WSL Ubuntu 20.04 
+sudo apt update
+sudo apt install -y git curl apt-transport-https ca-certificates
+
+echo 'deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/devel_kubic_libcontainers_stable.gpg > /dev/null
+sudo apt update
+sudo apt install podman
+sudo cp /usr/share/containers/containers.conf /etc/containers
+#< cgroup_manager = "systemd"
+#---
+#> cgroup_manager = "cgroupfs"
+#< # events_logger = "journald"
+#---
+#> events_logger = "file
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
+
+echo "$USER ALL=NOPASSWD:ALL" | (sudo su -c 'EDITOR="tee" visudo -f /etc/sudoers.d/podman-fix')
+minikube start
+
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+
+sudo apt install openjdk-16-jdk-headless
+
